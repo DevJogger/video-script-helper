@@ -5,6 +5,7 @@ import { useEffect } from 'react'
 import { StarterKit } from '@tiptap/starter-kit'
 import { Superscript } from '@tiptap/extension-superscript'
 import { Subscript } from '@tiptap/extension-subscript'
+import { TextStyle, Color } from '@tiptap/extension-text-style'
 import { MarkButton } from '@/components/tiptap-ui/mark-button'
 import { UndoRedoButton } from '@/components/tiptap-ui/undo-redo-button'
 
@@ -14,7 +15,7 @@ interface RichTextEditorProps {
 }
 const RichTextEditor = ({ onUpdate, content }: RichTextEditorProps) => {
   const editor = useEditor({
-    extensions: [StarterKit, Superscript, Subscript],
+    extensions: [StarterKit, Superscript, Subscript, TextStyle, Color],
     immediatelyRender: false,
 
     editorProps: {

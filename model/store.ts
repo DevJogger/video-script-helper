@@ -3,6 +3,7 @@ import { type JSONContent } from '@tiptap/react'
 import processContent from './pipelines'
 
 export interface States {
+  rawContent: JSONContent | undefined
   mode: 'cantonese' | 'mandarin' | 'subtitle'
   outputContent: JSONContent | undefined
 }
@@ -15,6 +16,7 @@ export interface Actions {
 export type Store = States & Actions
 
 const defaultState: States = {
+  rawContent: undefined,
   mode: 'cantonese',
   outputContent: undefined,
 }
@@ -23,12 +25,12 @@ export const createStore = (initialStates: States = defaultState) => {
   return createZustandStore<Store>()((set, get) => ({
     ...initialStates,
     onRawContentUpdate: (content) => {
-      set({ outputContent: processContent(content, get().mode) })
+      set({ rawContent: content, outputContent: processContent(content, get().mode) })
     },
     updateMode: (mode: 'cantonese' | 'mandarin' | 'subtitle') => {
       set({
         mode,
-        outputContent: processContent(get().outputContent, mode),
+        outputContent: processContent(get().rawContent, mode),
       })
     },
   }))

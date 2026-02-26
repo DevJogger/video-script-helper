@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Copy, Printer, Download } from 'lucide-react'
 import RichTextEditor from '@/components/rich-text-editor'
-import { useStore } from '@/store/store-provider'
+import { useStore } from '@/model/store-provider'
 
 export default function Home() {
   const { onRawContentUpdate, mode, updateMode, outputContent } = useStore((state) => state)
@@ -19,7 +19,7 @@ export default function Home() {
         {/* Left side: Input area */}
         <Card>
           <CardHeader className='flex h-9 items-center justify-between'>
-            <CardTitle>原始稿件</CardTitle>
+            <CardTitle>Input</CardTitle>
           </CardHeader>
           <CardContent className='flex flex-1 flex-col gap-4'>
             <RichTextEditor
@@ -33,12 +33,12 @@ export default function Home() {
         {/* Right side: Output area */}
         <Card>
           <CardHeader className='flex h-9 items-center justify-between'>
-            <CardTitle>
+            <div className='flex items-center gap-4'>
+              <CardTitle>Output</CardTitle>
               <div className='flex gap-2'>
                 <Button
                   onClick={() => updateMode('cantonese')}
                   className='flex-1'
-                  size='lg'
                   variant={mode === 'cantonese' ? 'default' : 'outline'}
                 >
                   粵
@@ -46,7 +46,6 @@ export default function Home() {
                 <Button
                   onClick={() => updateMode('mandarin')}
                   className='flex-1'
-                  size='lg'
                   variant={mode === 'mandarin' ? 'default' : 'outline'}
                 >
                   國
@@ -54,23 +53,23 @@ export default function Home() {
                 <Button
                   onClick={() => updateMode('subtitle')}
                   className='flex-1'
-                  size='lg'
                   variant={mode === 'subtitle' ? 'default' : 'outline'}
                 >
                   字幕
                 </Button>
               </div>
-            </CardTitle>
-            <div className='flex gap-2'>
+            </div>
+            {/* <div className='flex gap-2'>
               <Button
                 variant='outline'
                 size='icon'
                 // onClick={handleCopy}
                 title='複製'
+                disabled
               >
                 <Copy className='h-4 w-4' />
               </Button>
-              <Button variant='outline' size='icon' onClick={handlePrint} title='打印'>
+              <Button variant='outline' size='icon' onClick={handlePrint} title='打印' disabled>
                 <Printer className='h-4 w-4' />
               </Button>
               <Button
@@ -78,10 +77,11 @@ export default function Home() {
                 size='icon'
                 // onClick={handleDownload}
                 title='下載'
+                disabled
               >
                 <Download className='h-4 w-4' />
               </Button>
-            </div>
+            </div> */}
           </CardHeader>
           <CardContent className='flex flex-1 flex-col gap-4'>
             <RichTextEditor content={outputContent} />
