@@ -43,7 +43,7 @@ export default function Home() {
                 >
                   粵
                 </Button>
-                <Button
+                {/* <Button
                   onClick={() => updateMode('mandarin')}
                   className='flex-1'
                   variant={mode === 'mandarin' ? 'default' : 'outline'}
@@ -56,7 +56,7 @@ export default function Home() {
                   variant={mode === 'subtitle' ? 'default' : 'outline'}
                 >
                   字幕
-                </Button>
+                </Button> */}
               </div>
             </div>
             {/* <div className='flex gap-2'>
