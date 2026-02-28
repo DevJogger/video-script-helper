@@ -28,7 +28,7 @@ const RichTextEditor = ({ onUpdate, content }: RichTextEditorProps) => {
 
     editorProps: {
       attributes: {
-        class: 'focus:outline-none p-2 bg-stone-100 h-full',
+        class: 'focus:outline-none p-2 bg-stone-100 h-full print:bg-transparent print:p-0',
       },
     },
     onUpdate: ({ editor }) => {
@@ -42,9 +42,9 @@ const RichTextEditor = ({ onUpdate, content }: RichTextEditorProps) => {
   }, [content, editor])
 
   return (
-    <div className='focus-within:border-ring focus-within:ring-ring/50 no-scrollbar flex h-full w-full flex-1 flex-col overflow-auto rounded-lg font-mono focus-within:ring-2'>
+    <div className='focus-within:border-ring focus-within:ring-ring/50 no-scrollbar flex h-full w-full flex-1 flex-col overflow-auto rounded-lg font-mono focus-within:ring-2 print:rounded-none print:border-0 print:ring-0'>
       <EditorContext.Provider value={{ editor }}>
-        <div className='sticky top-0 z-10 flex gap-1 border-b bg-stone-100 p-1'>
+        <div className='sticky top-0 z-10 flex gap-1 border-b bg-stone-100 p-1 print:hidden'>
           <MarkButton editor={editor} type='bold' />
           <MarkButton editor={editor} type='italic' />
           <MarkButton editor={editor} type='strike' />
@@ -52,7 +52,11 @@ const RichTextEditor = ({ onUpdate, content }: RichTextEditorProps) => {
           <UndoRedoButton editor={editor} action='undo' />
           <UndoRedoButton editor={editor} action='redo' />
         </div>
-        <EditorContent className='flex-1 overflow-auto' editor={editor} role='presentation' />
+        <EditorContent
+          className='print:no-scrollbar flex-1 overflow-auto'
+          editor={editor}
+          role='presentation'
+        />
       </EditorContext.Provider>
     </div>
   )

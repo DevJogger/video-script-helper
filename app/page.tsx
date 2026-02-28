@@ -13,11 +13,11 @@ export default function Home() {
   }
 
   return (
-    <main className='container mx-auto flex h-svh flex-col p-4 lg:p-8'>
+    <main className='container mx-auto flex h-svh flex-col p-4 lg:p-8 print:p-0 print:pt-8'>
       <h1 className='sr-only mb-8 text-center text-3xl font-bold'>視頻稿件處理工具</h1>
-      <div className='grid flex-1 gap-6 lg:grid-cols-2 print:hidden'>
+      <div className='grid flex-1 gap-6 lg:grid-cols-2'>
         {/* Left side: Input area */}
-        <Card>
+        <Card className='print:hidden'>
           <CardHeader className='flex h-9 items-center justify-between'>
             <CardTitle>Input</CardTitle>
           </CardHeader>
@@ -31,8 +31,8 @@ export default function Home() {
         </Card>
 
         {/* Right side: Output area */}
-        <Card>
-          <CardHeader className='flex h-9 items-center justify-between'>
+        <Card className='print:border-0 print:p-0 print:shadow-none'>
+          <CardHeader className='flex h-9 items-center justify-between print:hidden'>
             <div className='flex items-center gap-4'>
               <CardTitle>Output</CardTitle>
               <div className='flex gap-2'>
@@ -59,8 +59,8 @@ export default function Home() {
                 </Button> */}
               </div>
             </div>
-            {/* <div className='flex gap-2'>
-              <Button
+            <div className='flex gap-2'>
+              {/* <Button
                 variant='outline'
                 size='icon'
                 // onClick={handleCopy}
@@ -68,11 +68,11 @@ export default function Home() {
                 disabled
               >
                 <Copy className='h-4 w-4' />
-              </Button>
-              <Button variant='outline' size='icon' onClick={handlePrint} title='打印' disabled>
+              </Button> */}
+              <Button variant='outline' size='icon' onClick={handlePrint} title='打印'>
                 <Printer className='h-4 w-4' />
               </Button>
-              <Button
+              {/* <Button
                 variant='outline'
                 size='icon'
                 // onClick={handleDownload}
@@ -80,15 +80,14 @@ export default function Home() {
                 disabled
               >
                 <Download className='h-4 w-4' />
-              </Button>
-            </div> */}
+              </Button> */}
+            </div>
           </CardHeader>
           <CardContent className='flex flex-1 flex-col gap-4'>
             <RichTextEditor content={outputContent} />
           </CardContent>
         </Card>
       </div>
-      <div className='hidden print:block'></div>
     </main>
   )
 }
