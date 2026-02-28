@@ -16,5 +16,28 @@
   {
     "mandarin": "住房",
     "cantonese": "房屋"
+  },
+  {
+    "mandarin": "擁堵",
+    "cantonese": "擠塞"
+  },
+  {
+    "mandarin": "索賠",
+    "cantonese": "索償"
+  },
+  {
+    "mandarin": "信息",
+    "cantonese": "資訊",
+    "reversible": false
+  },
+  {
+    "mandarin": "志願者",
+    "cantonese": "義工",
+    "reversible": false
+  },
+  {
+    "mandarin": "志工",
+    "cantonese": "義工",
+    "reversible": false
   }
 ]
