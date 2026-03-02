@@ -83,18 +83,17 @@ const hintPronunciation = (node: JSONContent): JSONContent[] => {
   const text = node.text || ''
   const originalMarks = node.marks || []
 
-  // If the text is English alphabet, skip pronunciation hinting
-  if (text && /[a-zA-Z]/.test(text)) {
-    return [node]
-  }
-
   // TODO: hardcode for now, optimize later
   const pinyinRegex = /^(guang|guo|kuang|n)/g
 
   // pinyinRegex.lastIndex = 0
   const character = pinyin(text, { toneType: 'none', type: 'array', traditional: true })
-    .map((str, index) => ({ original: text[index], match: pinyinRegex.exec(str), index }))
-    .find((item) => item.match !== null)
+    .map((str, index) => ({
+      original: text[index],
+      match: str.length > 1 && pinyinRegex.exec(str),
+      index,
+    }))
+    .find((item) => !!item.match)
 
   if (!character) {
     return [node]
