@@ -39,5 +39,30 @@
     "mandarin": "志工",
     "cantonese": "義工",
     "reversible": false
+  },
+  {
+    "mandarin": "這",
+    "cantonese": "呢",
+    "reversible": false
+  },
+  {
+    "mandarin": "的",
+    "cantonese": "嘅",
+    "reversible": false
+  },
+  {
+    "mandarin": "和",
+    "cantonese": "同",
+    "reversible": false
+  },
+  {
+    "mandarin": "在",
+    "cantonese": "係",
+    "reversible": false
+  },
+  {
+    "mandarin": "讓",
+    "cantonese": "畀",
+    "reversible": false
   }
 ]
