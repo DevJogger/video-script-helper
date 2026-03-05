@@ -84,7 +84,7 @@ const hintPronunciation = (node: JSONContent): JSONContent[] => {
   const originalMarks = node.marks || []
 
   // TODO: hardcode for now, optimize later
-  const pinyinRegex = /^(guang|guo|kuang|n)/g
+  const pinyinRegex = /^(guang|guo|kuang|kuo|n)/g
 
   // pinyinRegex.lastIndex = 0
   const character = pinyin(text, { toneType: 'none', type: 'array', traditional: true })
@@ -124,8 +124,11 @@ const hintPronunciation = (node: JSONContent): JSONContent[] => {
       {
         type: 'highlight',
         attrs: {
-          color: '#fff59d',
+          color: '#fff000',
         },
+      },
+      {
+        type: 'bold',
       },
     ],
   })
