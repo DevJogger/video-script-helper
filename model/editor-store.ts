@@ -1,11 +1,9 @@
 import { createStore as createZustandStore } from 'zustand/vanilla'
 import { type JSONContent } from '@tiptap/react'
-import processContent from './pipelines'
 
 export interface States {
   rawContent: JSONContent | undefined
   mode: 'cantonese' | 'mandarin' | 'subtitle'
-  // outputContent: JSONContent | undefined
 }
 
 export interface Actions {
@@ -18,23 +16,16 @@ export type EditorStore = States & Actions
 const defaultState: States = {
   rawContent: undefined,
   mode: 'cantonese',
-  // outputContent: undefined,
 }
 
 export const createEditorStore = (initialStates: States = defaultState) => {
-  return createZustandStore<EditorStore>()((set, get) => ({
+  return createZustandStore<EditorStore>()((set) => ({
     ...initialStates,
     onRawContentUpdate: (content) => {
-      set({
-        rawContent: content,
-        // outputContent: processContent(content, get().mode)
-      })
+      set({ rawContent: content })
     },
     updateMode: (mode: 'cantonese' | 'mandarin' | 'subtitle') => {
-      set({
-        mode,
-        // outputContent: processContent(get().rawContent, mode),
-      })
+      set({ mode })
     },
   }))
 }
