@@ -68,5 +68,50 @@
   {
     "mandarin": "通過",
     "cantonese": "透過"
+  },
+  {
+    "mandarin": "不",
+    "cantonese": "唔"
+  },
+  {
+    "mandarin": "沒",
+    "cantonese": "冇"
+  },
+  {
+    "mandarin": "大小",
+    "cantonese": "大細"
+  },
+  {
+    "mandarin": "來",
+    "cantonese": "嚟"
+  },
+  {
+    "mandarin": "還",
+    "cantonese": "仲",
+    "reversible": false
+  },
+  {
+    "mandarin": "她",
+    "cantonese": "佢",
+    "reversible": false
+  },
+  {
+    "mandarin": "他",
+    "cantonese": "佢",
+    "reversible": false
+  },
+  {
+    "mandarin": "它",
+    "cantonese": "佢",
+    "reversible": false
+  },
+  {
+    "mandarin": "們",
+    "cantonese": "哋"
+  },
+  {
+    "mandarin": "與",
+    "cantonese": "同",
+    "reversible": false
   }
 ]
