@@ -1,16 +1,31 @@
 'use client'
+import { useState, useEffect, use } from 'react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Copy, Printer, Download } from 'lucide-react'
+import { Settings, Printer, Download } from 'lucide-react'
 import RichTextEditor from '@/components/rich-text-editor'
-import { useStore } from '@/model/store-provider'
+import SettingsDrawer from '@/components/settings-drawer'
+import { useEditorStore, useSettingsStore } from '@/model/store-provider'
+import { type JSONContent } from '@tiptap/react'
+import processContent from '@/model/pipelines'
 
 export default function Home() {
-  const { onRawContentUpdate, mode, updateMode, outputContent } = useStore((state) => state)
+  const mode = useEditorStore((state) => state.mode)
+  const rawContent = useEditorStore((state) => state.rawContent)
+  const { onRawContentUpdate, updateMode } = useEditorStore((state) => state)
+  const { pronunciationHints } = useSettingsStore((state) => state)
+
+  const [outputContent, setOutputContent] = useState<JSONContent | undefined>(undefined)
+
+  useEffect(() => {
+    setOutputContent(processContent(rawContent, mode, pronunciationHints))
+  }, [rawContent, mode, pronunciationHints])
 
   const handlePrint = () => {
     window.print()
   }
+
+  const handleSettings = () => {}
 
   return (
     <main className='container mx-auto flex h-svh flex-col p-4 lg:p-8 print:p-0 print:pt-8'>
@@ -43,7 +58,7 @@ export default function Home() {
                 >
                   粵
                 </Button>
-                {/* <Button
+                <Button
                   onClick={() => updateMode('mandarin')}
                   className='flex-1'
                   variant={mode === 'mandarin' ? 'default' : 'outline'}
@@ -56,31 +71,24 @@ export default function Home() {
                   variant={mode === 'subtitle' ? 'default' : 'outline'}
                 >
                   字幕
-                </Button> */}
+                </Button>
               </div>
             </div>
             <div className='flex gap-2'>
-              {/* <Button
-                variant='outline'
-                size='icon'
-                // onClick={handleCopy}
-                title='複製'
-                disabled
-              >
-                <Copy className='h-4 w-4' />
-              </Button> */}
-              <Button variant='outline' size='icon' onClick={handlePrint} title='打印'>
-                <Printer className='h-4 w-4' />
-              </Button>
-              {/* <Button
-                variant='outline'
-                size='icon'
-                // onClick={handleDownload}
-                title='下載'
-                disabled
-              >
-                <Download className='h-4 w-4' />
-              </Button> */}
+              {mode === 'subtitle' ? (
+                <Button variant='outline' size='icon' title='下載'>
+                  <Download className='h-4 w-4' />
+                </Button>
+              ) : (
+                <Button variant='outline' size='icon' onClick={handlePrint} title='打印'>
+                  <Printer className='h-4 w-4' />
+                </Button>
+              )}
+              <SettingsDrawer>
+                <Button variant='outline' size='icon' onClick={handleSettings} title='設置'>
+                  <Settings className='h-4 w-4' />
+                </Button>
+              </SettingsDrawer>
             </div>
           </CardHeader>
           <CardContent className='flex flex-1 flex-col gap-4'>

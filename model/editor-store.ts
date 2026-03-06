@@ -5,7 +5,7 @@ import processContent from './pipelines'
 export interface States {
   rawContent: JSONContent | undefined
   mode: 'cantonese' | 'mandarin' | 'subtitle'
-  outputContent: JSONContent | undefined
+  // outputContent: JSONContent | undefined
 }
 
 export interface Actions {
@@ -13,24 +13,27 @@ export interface Actions {
   updateMode: (mode: 'cantonese' | 'mandarin' | 'subtitle') => void
 }
 
-export type Store = States & Actions
+export type EditorStore = States & Actions
 
 const defaultState: States = {
   rawContent: undefined,
   mode: 'cantonese',
-  outputContent: undefined,
+  // outputContent: undefined,
 }
 
-export const createStore = (initialStates: States = defaultState) => {
-  return createZustandStore<Store>()((set, get) => ({
+export const createEditorStore = (initialStates: States = defaultState) => {
+  return createZustandStore<EditorStore>()((set, get) => ({
     ...initialStates,
     onRawContentUpdate: (content) => {
-      set({ rawContent: content, outputContent: processContent(content, get().mode) })
+      set({
+        rawContent: content,
+        // outputContent: processContent(content, get().mode)
+      })
     },
     updateMode: (mode: 'cantonese' | 'mandarin' | 'subtitle') => {
       set({
         mode,
-        outputContent: processContent(get().rawContent, mode),
+        // outputContent: processContent(get().rawContent, mode),
       })
     },
   }))

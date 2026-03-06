@@ -14,7 +14,7 @@ interface RichTextEditorProps {
   onUpdate?: (editor: Editor) => void
   content?: JSONContent
 }
-const RichTextEditor = ({ onUpdate, content }: RichTextEditorProps) => {
+const RichTextEditor: React.FC<RichTextEditorProps> = ({ onUpdate, content }) => {
   const editor = useEditor({
     extensions: [
       StarterKit,

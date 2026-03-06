@@ -1,20 +1,24 @@
 import { type JSONContent } from '@tiptap/react'
 import { pinyin, addTraditionalDict } from 'pinyin-pro'
 import TraditionalDict from '@pinyin-pro/data/traditional'
-import { type States } from './store'
+import { type States as EditorStoreStates } from './editor-store'
 import { mandarinRegex, mandarinToCantoneseMap } from './lexicon'
 
 addTraditionalDict(TraditionalDict)
 
-const processNode = (node: JSONContent, type: 'replace' | 'hint'): JSONContent | JSONContent[] => {
+const processNode = (
+  node: JSONContent,
+  type: 'replace' | 'hint',
+  pronunciationHints: Record<string, boolean>[]
+): JSONContent | JSONContent[] => {
   if (node.type === 'text' && typeof node.text === 'string') {
-    return type === 'replace' ? replaceTextNode(node) : hintPronunciation(node)
+    return type === 'replace' ? replaceTextNode(node) : hintPronunciation(node, pronunciationHints)
   }
 
   if (node.content && Array.isArray(node.content)) {
     return {
       ...node,
-      content: node.content.flatMap((child) => processNode(child, type)),
+      content: node.content.flatMap((child) => processNode(child, type, pronunciationHints)),
     }
   }
 
@@ -79,14 +83,25 @@ const replaceTextNode = (node: JSONContent): JSONContent[] => {
   return result
 }
 
-const hintPronunciation = (node: JSONContent): JSONContent[] => {
+const hintPronunciation = (
+  node: JSONContent,
+  pronunciationHints: Record<string, boolean>[]
+): JSONContent[] => {
+  if (!pronunciationHints.some((item) => Object.values(item)[0])) {
+    return [node]
+  }
+
   const text = node.text || ''
   const originalMarks = node.marks || []
 
-  // TODO: hardcode for now, optimize later
-  const pinyinRegex = /^(guang|guo|kuang|kuo|n)/g
+  const pinyinRegex = new RegExp(
+    `^(${pronunciationHints
+      .filter((item) => Object.values(item)[0])
+      .map((hint) => Object.keys(hint)[0])
+      .join('|')})`,
+    'g'
+  )
 
-  // pinyinRegex.lastIndex = 0
   const character = pinyin(text, { toneType: 'none', type: 'array', traditional: true })
     .map((str, index) => ({
       original: text[index],
@@ -135,25 +150,30 @@ const hintPronunciation = (node: JSONContent): JSONContent[] => {
 
   if (afterText) {
     result.push(
-      ...hintPronunciation({
-        type: 'text',
-        text: afterText,
-        marks: originalMarks,
-      })
+      ...hintPronunciation(
+        {
+          type: 'text',
+          text: afterText,
+          marks: originalMarks,
+        },
+        pronunciationHints
+      )
     )
   }
 
   return result
 }
 
-const cantonesePipeline = (content: JSONContent) => {
+const cantonesePipeline = (content: JSONContent, pronunciationHints: Record<string, boolean>[]) => {
   const replacedContent = {
     ...content,
-    content: content.content?.flatMap((child) => processNode(child, 'replace')),
+    content: content.content?.flatMap((child) => processNode(child, 'replace', pronunciationHints)),
   }
   const processedContent = {
     ...replacedContent,
-    content: replacedContent.content?.flatMap((child) => processNode(child, 'hint')),
+    content: replacedContent.content?.flatMap((child) =>
+      processNode(child, 'hint', pronunciationHints)
+    ),
   }
   if (process.env.NODE_ENV === 'development') {
     console.log('Original content in Cantonese mode:')
@@ -167,20 +187,50 @@ const cantonesePipeline = (content: JSONContent) => {
 const mandarinPipeline = (content: JSONContent) => {
   console.log('Processing content in Mandarin mode...')
   console.log(content)
-  return content
+  return {
+    type: 'doc',
+    content: [
+      {
+        type: 'paragraph',
+        content: [
+          {
+            type: 'text',
+            text: '(功能開發中)',
+          },
+        ],
+      },
+    ],
+  }
 }
 
 const subtitlePipeline = (content: JSONContent) => {
   console.log('Processing content in Subtitle mode...')
   console.log(content)
-  return content
+  return {
+    type: 'doc',
+    content: [
+      {
+        type: 'paragraph',
+        content: [
+          {
+            type: 'text',
+            text: '(功能開發中)',
+          },
+        ],
+      },
+    ],
+  }
 }
 
-const processContent = (content: JSONContent | undefined, mode: States['mode']) => {
+const processContent = (
+  content: JSONContent | undefined,
+  mode: EditorStoreStates['mode'],
+  pronunciationHints: Record<string, boolean>[]
+) => {
   if (!content) return undefined
   switch (mode) {
     case 'cantonese':
-      return cantonesePipeline(content)
+      return cantonesePipeline(content, pronunciationHints)
     case 'mandarin':
       return mandarinPipeline(content)
     case 'subtitle':
