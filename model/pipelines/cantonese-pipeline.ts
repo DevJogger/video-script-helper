@@ -1,8 +1,7 @@
 import { type JSONContent } from '@tiptap/react'
 import { pinyin, addTraditionalDict } from 'pinyin-pro'
 import TraditionalDict from '@pinyin-pro/data/traditional'
-import { type States as EditorStoreStates } from './editor-store'
-import { mandarinRegex, mandarinToCantoneseMap } from './lexicon'
+import { mandarinRegex, mandarinToCantoneseMap } from '@/model/lexicon'
 
 addTraditionalDict(TraditionalDict)
 
@@ -184,60 +183,4 @@ const cantonesePipeline = (content: JSONContent, pronunciationHints: Record<stri
   return processedContent
 }
 
-const mandarinPipeline = (content: JSONContent) => {
-  console.log('Processing content in Mandarin mode...')
-  console.log(content)
-  return {
-    type: 'doc',
-    content: [
-      {
-        type: 'paragraph',
-        content: [
-          {
-            type: 'text',
-            text: '(功能開發中)',
-          },
-        ],
-      },
-    ],
-  }
-}
-
-const subtitlePipeline = (content: JSONContent) => {
-  console.log('Processing content in Subtitle mode...')
-  console.log(content)
-  return {
-    type: 'doc',
-    content: [
-      {
-        type: 'paragraph',
-        content: [
-          {
-            type: 'text',
-            text: '(功能開發中)',
-          },
-        ],
-      },
-    ],
-  }
-}
-
-const processContent = (
-  content: JSONContent | undefined,
-  mode: EditorStoreStates['mode'],
-  pronunciationHints: Record<string, boolean>[]
-) => {
-  if (!content) return undefined
-  switch (mode) {
-    case 'cantonese':
-      return cantonesePipeline(content, pronunciationHints)
-    case 'mandarin':
-      return mandarinPipeline(content)
-    case 'subtitle':
-      return subtitlePipeline(content)
-    default:
-      return content
-  }
-}
-
-export default processContent
+export default cantonesePipeline
