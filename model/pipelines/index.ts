@@ -9,6 +9,10 @@ const processContent = (
   mode: EditorStoreStates['mode'],
   pronunciationHints: Record<string, boolean>[]
 ) => {
+    if (process.env.NODE_ENV === 'development') {
+    console.log('Original content:')
+    console.log(content)
+  }
   if (!content) return undefined
   switch (mode) {
     case 'cantonese':

@@ -1,10 +1,6 @@
 import { type JSONContent } from '@tiptap/react'
 
 const mandarinPipeline = (content: JSONContent) => {
-  if (process.env.NODE_ENV === 'development') {
-    console.log('Original content in Mandarin mode:')
-    console.log(content)
-  }
   return {
     type: 'doc',
     content: [

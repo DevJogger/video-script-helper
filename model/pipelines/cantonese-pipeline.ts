@@ -175,8 +175,6 @@ const cantonesePipeline = (content: JSONContent, pronunciationHints: Record<stri
     ),
   }
   if (process.env.NODE_ENV === 'development') {
-    console.log('Original content in Cantonese mode:')
-    console.log(content)
     console.log('Processed content in Cantonese mode:')
     console.log(processedContent)
   }

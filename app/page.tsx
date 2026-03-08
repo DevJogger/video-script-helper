@@ -25,7 +25,10 @@ export default function Home() {
     window.print()
   }
 
-  const handleSettings = () => {}
+  const handleDownload = () => {
+    // TODO: download the output content as a UTF-16 LE encoded .txt file
+    alert('下載功能正在開發中')
+  }
 
   return (
     <main className='container mx-auto flex h-svh flex-col p-4 lg:p-8 print:p-0 print:pt-8'>
@@ -76,7 +79,7 @@ export default function Home() {
             </div>
             <div className='flex gap-2'>
               {mode === 'subtitle' ? (
-                <Button variant='outline' size='icon' title='下載'>
+                <Button variant='outline' size='icon' title='下載' onClick={handleDownload}>
                   <Download className='h-4 w-4' />
                 </Button>
               ) : (
@@ -85,7 +88,7 @@ export default function Home() {
                 </Button>
               )}
               <SettingsDrawer>
-                <Button variant='outline' size='icon' onClick={handleSettings} title='設置'>
+                <Button variant='outline' size='icon' title='設置'>
                   <Settings className='h-4 w-4' />
                 </Button>
               </SettingsDrawer>

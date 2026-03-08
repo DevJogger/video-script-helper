@@ -9,12 +9,14 @@ import { TextStyle, Color } from '@tiptap/extension-text-style'
 import Highlight from '@tiptap/extension-highlight'
 import { MarkButton } from '@/components/tiptap-ui/mark-button'
 import { UndoRedoButton } from '@/components/tiptap-ui/undo-redo-button'
+import { useEditorStore } from '@/model/store-provider'
 
 interface RichTextEditorProps {
   onUpdate?: (editor: Editor) => void
   content?: JSONContent
 }
 const RichTextEditor: React.FC<RichTextEditorProps> = ({ onUpdate, content }) => {
+  const mode = useEditorStore((state) => state.mode)
   const editor = useEditor({
     extensions: [
       StarterKit,
@@ -28,7 +30,7 @@ const RichTextEditor: React.FC<RichTextEditorProps> = ({ onUpdate, content }) =>
 
     editorProps: {
       attributes: {
-        class: 'focus:outline-none p-2 bg-stone-100 h-full print:bg-transparent print:p-0',
+        class: `focus:outline-none p-2 h-full print:bg-transparent print:p-0 font-noto-sans-mono ${mode === 'subtitle' && !!content ? 'bg-[linear-gradient(to_right,lab(96.5286%_-.0991821_.364268)_0rem,lab(96.5286%_-.0991821_.364268)_16.5rem,#afb9c7_16.5rem)]' : 'bg-stone-100'}`,
       },
     },
     onUpdate: ({ editor }) => {
