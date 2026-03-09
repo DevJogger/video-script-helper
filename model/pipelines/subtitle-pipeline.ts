@@ -53,8 +53,14 @@ const subtitlePipeline = (docNode: JSONContent) => {
         }
         return acc
       }, [])
-      //
-      .map((line) => line.replace(/[、＃]/g, ' ').trim())
+      // remove/replace certain punctuations, and trim the whitespace
+      .map((line) =>
+        line
+          .replace(/[、＃#]/g, ' ')
+          .replace(/《/g, '「')
+          .replace(/》/g, '」')
+          .trim()
+      )
       // remove the empty strings
       .filter(Boolean)
       // convert the array of strings into an array of paragraph nodes

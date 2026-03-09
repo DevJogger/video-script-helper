@@ -16,6 +16,7 @@ export default function Home() {
   const { pronunciationHints } = useSettingsStore((state) => state)
 
   const [outputContent, setOutputContent] = useState<JSONContent | undefined>(undefined)
+  const [downloadContent, setDownloadContent] = useState<string>('')
 
   useEffect(() => {
     setOutputContent(processContent(rawContent, mode, pronunciationHints))
@@ -26,8 +27,21 @@ export default function Home() {
   }
 
   const handleDownload = () => {
-    // TODO: download the output content as a UTF-16 LE encoded .txt file
-    alert('下載功能正在開發中')
+    const byteArray = [255, 254]
+    for (let i = 0; i < downloadContent.length; ++i) {
+      const charCode = downloadContent.charCodeAt(i)
+      byteArray.push(charCode & 0xff)
+      byteArray.push((charCode & 0xff00) >>> 8)
+    }
+    const blob = new Blob([new Uint8Array(byteArray)], { type: 'text/plain; charset=UTF-16LE;' })
+    const blobUrl = URL.createObjectURL(blob)
+    const link = document.createElement('a')
+    link.href = blobUrl
+    link.download = 'subtitle.txt'
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+    URL.revokeObjectURL(blobUrl)
   }
 
   return (
@@ -95,7 +109,12 @@ export default function Home() {
             </div>
           </CardHeader>
           <CardContent className='flex flex-1 flex-col gap-4'>
-            <RichTextEditor content={outputContent} />
+            <RichTextEditor
+              content={outputContent}
+              onUpdate={(editor) => {
+                setDownloadContent(editor.getText({ blockSeparator: '\n' }))
+              }}
+            />
           </CardContent>
         </Card>
       </div>
