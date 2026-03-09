@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
-import { Geist, Geist_Mono, Noto_Sans_Mono } from 'next/font/google'
+import { Geist, Geist_Mono } from 'next/font/google'
+import localFont from 'next/font/local'
 import './globals.css'
 import { StoreProvider } from '@/model/store-provider'
 
@@ -13,9 +14,31 @@ const geistMono = Geist_Mono({
   subsets: ['latin'],
 })
 
-const notoSansMono = Noto_Sans_Mono({
-  variable: '--font-noto-sans-mono',
-  subsets: ['latin'],
+const sarasaMonoTC = localFont({
+  src: [
+    {
+      path: '../public/fonts/sarasa/SarasaMonoTC-Regular.ttf',
+      weight: '400',
+      style: 'normal',
+    },
+    {
+      path: '../public/fonts/sarasa/SarasaMonoTC-Italic.ttf',
+      weight: '400',
+      style: 'italic',
+    },
+    {
+      path: '../public/fonts/sarasa/SarasaMonoTC-Bold.ttf',
+      weight: '700',
+      style: 'normal',
+    },
+    {
+      path: '../public/fonts/sarasa/SarasaMonoTC-BoldItalic.ttf',
+      weight: '700',
+      style: 'italic',
+    },
+  ],
+  variable: '--font-sarasa',
+  display: 'swap',
 })
 
 export const metadata: Metadata = {
@@ -31,7 +54,7 @@ export default function RootLayout({
   return (
     <html lang='en'>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${notoSansMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${sarasaMonoTC.variable} antialiased`}
       >
         <StoreProvider>{children}</StoreProvider>
       </body>
