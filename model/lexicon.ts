@@ -1,15 +1,14 @@
-import rawLexicon from '@/config/lexicon.raw.json'
+import rawCantoneseLexicon from '@/config/cantonese-lexicon.raw.json'
+import rawMandarinLexicon from '@/config/mandarin-lexicon.raw.json'
 
 interface RawLexiconEntry {
   mandarin?: unknown
   cantonese?: unknown
-  reversible?: unknown
 }
 
 export interface LexiconEntry {
   mandarin: string
   cantonese: string
-  reversible: boolean
 }
 
 function assert(condition: unknown, message: string): asserts condition {
@@ -43,29 +42,52 @@ const compileLexicon = (raw: unknown[]): LexiconEntry[] => {
 
     seenMandarin.add(entry.mandarin)
 
-    const reversible = entry.reversible === undefined ? true : Boolean(entry.reversible)
-
     result.push({
       mandarin: entry.mandarin,
       cantonese: entry.cantonese,
-      reversible,
     })
   })
 
   return result
 }
 
-const lexicon: LexiconEntry[] = compileLexicon(rawLexicon as unknown[])
+const cantoneseLexicon: LexiconEntry[] = compileLexicon(rawCantoneseLexicon as unknown[])
+const mandarinLexicon: LexiconEntry[] = compileLexicon(rawMandarinLexicon as unknown[])
 
 const mandarinToCantoneseMap = new Map<string, string>(
-  lexicon.map((item) => [item.mandarin, item.cantonese])
+  cantoneseLexicon.map((item) => [item.mandarin, item.cantonese])
 )
 
-const mandarinWords = lexicon.map((item) => item.mandarin).sort((a, b) => b.length - a.length)
+const cantoneseToMandarinMap = new Map<string, string>(
+  mandarinLexicon.map((item) => [item.cantonese, item.mandarin])
+)
 
 // escape RegExp special characters in the words to be replaced
 const escapeRegExp = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
 
-const mandarinRegex = new RegExp(mandarinWords.map(escapeRegExp).join('|'), 'g')
+const cantoneseLexiconPattern = new RegExp(
+  cantoneseLexicon
+    .map((item) => item.mandarin)
+    .sort((a, b) => b.length - a.length)
+    .map(escapeRegExp)
+    .join('|'),
+  'g'
+)
 
-export { lexicon, mandarinToCantoneseMap, mandarinRegex }
+const mandarinLexiconPattern = new RegExp(
+  mandarinLexicon
+    .map((item) => item.cantonese)
+    .sort((a, b) => b.length - a.length)
+    .map(escapeRegExp)
+    .join('|'),
+  'g'
+)
+
+export {
+  cantoneseLexicon,
+  mandarinToCantoneseMap,
+  cantoneseLexiconPattern,
+  mandarinLexicon,
+  cantoneseToMandarinMap,
+  mandarinLexiconPattern,
+}

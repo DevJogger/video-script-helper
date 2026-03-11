@@ -1,9 +1,6 @@
 import { type JSONContent } from '@tiptap/react'
-import { pinyin, addTraditionalDict } from 'pinyin-pro'
-import TraditionalDict from '@pinyin-pro/data/traditional'
-import { mandarinRegex, mandarinToCantoneseMap } from '@/model/lexicon'
-
-addTraditionalDict(TraditionalDict)
+import { pinyin } from 'pinyin-pro'
+import { cantoneseLexiconPattern, mandarinToCantoneseMap } from '@/model/lexicon'
 
 const processNode = (
   node: JSONContent,
@@ -32,8 +29,8 @@ const replaceTextNode = (node: JSONContent): JSONContent[] => {
     return [node]
   }
 
-  mandarinRegex.lastIndex = 0
-  const match = mandarinRegex.exec(text)
+  cantoneseLexiconPattern.lastIndex = 0
+  const match = cantoneseLexiconPattern.exec(text)
 
   if (!match || match.index === undefined) {
     return [node]

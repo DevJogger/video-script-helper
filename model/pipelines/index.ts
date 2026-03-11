@@ -1,15 +1,19 @@
+import { addTraditionalDict } from 'pinyin-pro'
+import TraditionalDict from '@pinyin-pro/data/traditional'
 import cantonesePipeline from './cantonese-pipeline'
 import mandarinPipeline from './mandarin-pipeline'
 import subtitlePipeline from './subtitle-pipeline'
 import { type JSONContent } from '@tiptap/react'
 import { type States as EditorStoreStates } from '@/model/editor-store'
 
+addTraditionalDict(TraditionalDict)
+
 const processContent = (
   content: JSONContent | undefined,
   mode: EditorStoreStates['mode'],
   pronunciationHints: Record<string, boolean>[]
 ) => {
-    if (process.env.NODE_ENV === 'development') {
+  if (process.env.NODE_ENV === 'development') {
     console.log('Original content:')
     console.log(content)
   }
