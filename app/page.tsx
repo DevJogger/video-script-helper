@@ -27,9 +27,10 @@ export default function Home() {
   }
 
   const handleDownload = () => {
+    const content = downloadContent.replace(/\n/g, '\r\n')
     const byteArray = [255, 254]
-    for (let i = 0; i < downloadContent.length; ++i) {
-      const charCode = downloadContent.charCodeAt(i)
+    for (let i = 0; i < content.length; ++i) {
+      const charCode = content.charCodeAt(i)
       byteArray.push(charCode & 0xff)
       byteArray.push((charCode & 0xff00) >>> 8)
     }
