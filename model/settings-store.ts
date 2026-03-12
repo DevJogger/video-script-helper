@@ -3,10 +3,12 @@ import { persist } from 'zustand/middleware'
 
 export interface States {
   pronunciationHints: Record<string, boolean>[]
+  rubyAnnotation: boolean
 }
 
 export interface Actions {
   updatePronunciationHint: (hint: string) => void
+  toggleRubyAnnotation: () => void
 }
 
 export type SettingsStore = States & Actions
@@ -14,6 +16,7 @@ export type SettingsStore = States & Actions
 const defaultState: States = {
   // TODO: hardcode for now, optimize later
   pronunciationHints: ['guang', 'guo', 'kuang', 'kuo', 'n'].map((hint) => ({ [hint]: false })),
+  rubyAnnotation: false,
 }
 
 export const createSettingsStore = (initialStates: States = defaultState) => {
@@ -28,6 +31,7 @@ export const createSettingsStore = (initialStates: States = defaultState) => {
             ),
           }))
         },
+        toggleRubyAnnotation: () => set((state) => ({ rubyAnnotation: !state.rubyAnnotation })),
       }),
       {
         name: 'settings-storage',

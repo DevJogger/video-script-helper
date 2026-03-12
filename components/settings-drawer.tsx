@@ -22,6 +22,8 @@ interface SettingsDrawerProps {
 const SettingsDrawer: React.FC<SettingsDrawerProps> = ({ children }) => {
   const pronunciationHints = useSettingsStore((state) => state.pronunciationHints)
   const updatePronunciationHint = useSettingsStore((state) => state.updatePronunciationHint)
+  const rubyAnnotation = useSettingsStore((state) => state.rubyAnnotation)
+  const toggleRubyAnnotation = useSettingsStore((state) => state.toggleRubyAnnotation)
 
   return (
     <Drawer direction='top'>
@@ -48,6 +50,17 @@ const SettingsDrawer: React.FC<SettingsDrawerProps> = ({ children }) => {
               )
             })}
           </FieldGroup>
+        </section>
+        <section className='flex flex-col items-center gap-2 p-2'>
+          <DrawerDescription>打印設置</DrawerDescription>
+          <Field orientation='horizontal' className='w-fit gap-2'>
+            <FieldLabel htmlFor='ruby-annotation'>打印國語稿時添加拼音注音</FieldLabel>
+            <Switch
+              id='ruby-annotation'
+              checked={rubyAnnotation}
+              onCheckedChange={toggleRubyAnnotation}
+            />
+          </Field>
         </section>
         <DrawerFooter className='items-center justify-center'>
           <DrawerClose asChild>

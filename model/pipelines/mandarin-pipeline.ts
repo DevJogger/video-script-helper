@@ -1,5 +1,4 @@
 import { type JSONContent } from '@tiptap/react'
-import { pinyin } from 'pinyin-pro'
 import { mandarinLexiconPattern, cantoneseToMandarinMap } from '@/model/lexicon'
 
 const processNode = (node: JSONContent): JSONContent | JSONContent[] => {
