@@ -5,13 +5,11 @@
   },
   {
     "mandarin": "唐人街",
-    "cantonese": "華埠",
-    "reversible": false
+    "cantonese": "華埠"
   },
   {
     "mandarin": "中國城",
-    "cantonese": "華埠",
-    "reversible": false
+    "cantonese": "華埠"
   },
   {
     "mandarin": "住房",
@@ -27,43 +25,35 @@
   },
   {
     "mandarin": "信息",
-    "cantonese": "資訊",
-    "reversible": false
+    "cantonese": "資訊"
   },
   {
     "mandarin": "志願者",
-    "cantonese": "義工",
-    "reversible": false
+    "cantonese": "義工"
   },
   {
     "mandarin": "志工",
-    "cantonese": "義工",
-    "reversible": false
+    "cantonese": "義工"
   },
   {
     "mandarin": "這",
-    "cantonese": "呢",
-    "reversible": false
+    "cantonese": "呢"
   },
   {
     "mandarin": "的",
-    "cantonese": "嘅",
-    "reversible": false
+    "cantonese": "嘅"
   },
   {
     "mandarin": "和",
-    "cantonese": "同",
-    "reversible": false
+    "cantonese": "同"
   },
   {
     "mandarin": "在",
-    "cantonese": "係",
-    "reversible": false
+    "cantonese": "係"
   },
   {
     "mandarin": "讓",
-    "cantonese": "令",
-    "reversible": false
+    "cantonese": "令"
   },
   {
     "mandarin": "通過",
@@ -83,23 +73,19 @@
   },
   {
     "mandarin": "還",
-    "cantonese": "仲",
-    "reversible": false
+    "cantonese": "仲"
   },
   {
     "mandarin": "她",
-    "cantonese": "佢",
-    "reversible": false
+    "cantonese": "佢"
   },
   {
     "mandarin": "他",
-    "cantonese": "佢",
-    "reversible": false
+    "cantonese": "佢"
   },
   {
     "mandarin": "它",
-    "cantonese": "佢",
-    "reversible": false
+    "cantonese": "佢"
   },
   {
     "mandarin": "們",
@@ -107,7 +93,6 @@
   },
   {
     "mandarin": "與",
-    "cantonese": "同",
-    "reversible": false
+    "cantonese": "同"
   }
 ]
