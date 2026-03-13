@@ -15,7 +15,7 @@ export type SettingsStore = States & Actions
 
 const defaultState: States = {
   // TODO: hardcode for now, optimize later
-  pronunciationHints: ['guang', 'guo', 'kuang', 'kuo', 'n'].map((hint) => ({ [hint]: false })),
+  pronunciationHints: ['guang', 'guo', 'kuang', 'kuo', 'nü'].map((hint) => ({ [hint]: false })),
   rubyAnnotation: false,
 }
 
