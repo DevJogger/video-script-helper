@@ -44,15 +44,17 @@ export default function Home() {
       byteArray.push((charCode & 0xff00) >>> 8)
     }
     const blob = new Blob([new Uint8Array(byteArray)], { type: 'text/plain; charset=UTF-16LE;' })
+    const consideredRawTitle =
+      rawContent?.content?.[0]?.content?.reduce((acc, cur) => {
+        if (cur.type === 'text' && typeof cur.text === 'string') {
+          return acc + cur.text
+        }
+        return acc
+      }, '') || ''
     const filename =
-      rawContent?.content?.[0]?.content
-        ?.reduce((acc, cur) => {
-          if (cur.type === 'text' && typeof cur.text === 'string') {
-            return acc + cur.text
-          }
-          return acc
-        }, '')
-        .replace(/ (TEXT|TXT).*/gi, '') || 'subtitle.txt'
+      (/(TEXT|TXT)/i.test(consideredRawTitle) &&
+        consideredRawTitle.replace(/ (TEXT|TXT).*/gi, '')) ||
+      'subtitle.txt'
     if ('showSaveFilePicker' in window) {
       try {
         const fileHandle = await (
