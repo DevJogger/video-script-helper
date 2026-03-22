@@ -48,7 +48,7 @@ const subtitlePipeline = (docNode: JSONContent) => {
         if (curr.content && curr.content.length > 0) {
           const textNode = curr.content[0]
           if (textNode.type === 'text' && typeof textNode.text === 'string') {
-            acc.push(...textNode.text.split(/[，。]/))
+            acc.push(...textNode.text.split(/[，。；]/))
           }
         }
         return acc

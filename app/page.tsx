@@ -35,7 +35,7 @@ export default function Home() {
     window.print()
   }
 
-  const handleDownload = () => {
+  const handleDownload = async () => {
     const content = downloadContent.replace(/\n/g, '\r\n')
     const byteArray = [255, 254]
     for (let i = 0; i < content.length; ++i) {
@@ -44,14 +44,44 @@ export default function Home() {
       byteArray.push((charCode & 0xff00) >>> 8)
     }
     const blob = new Blob([new Uint8Array(byteArray)], { type: 'text/plain; charset=UTF-16LE;' })
-    const blobUrl = URL.createObjectURL(blob)
-    const link = document.createElement('a')
-    link.href = blobUrl
-    link.download = 'subtitle.txt'
-    document.body.appendChild(link)
-    link.click()
-    document.body.removeChild(link)
-    URL.revokeObjectURL(blobUrl)
+    const filename =
+      rawContent?.content?.[0]?.content
+        ?.reduce((acc, cur) => {
+          if (cur.type === 'text' && typeof cur.text === 'string') {
+            return acc + cur.text
+          }
+          return acc
+        }, '')
+        .replace(/ (TEXT|TXT).*/gi, '') || 'subtitle.txt'
+    if ('showSaveFilePicker' in window) {
+      try {
+        const fileHandle = await (
+          window as Window &
+            typeof globalThis & {
+              showSaveFilePicker: (options?: object) => Promise<FileSystemFileHandle>
+            }
+        ).showSaveFilePicker({
+          suggestedName: filename,
+          types: [{ description: 'Text file', accept: { 'text/plain': ['.txt'] } }],
+        })
+        const writable = await fileHandle.createWritable()
+        await writable.write(blob)
+        await writable.close()
+      } catch (err) {
+        if ((err as DOMException).name !== 'AbortError') throw err
+        // user cancelled — do nothing
+      }
+    } else {
+      // Fallback for Firefox / unsupported browsers
+      const blobUrl = URL.createObjectURL(blob)
+      const link = document.createElement('a')
+      link.href = blobUrl
+      link.download = filename
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
+      URL.revokeObjectURL(blobUrl)
+    }
   }
 
   return (
