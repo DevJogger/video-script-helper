@@ -2,13 +2,14 @@
 import { useState, useEffect } from 'react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Settings, Printer, Download } from 'lucide-react'
+import { Settings, Printer, Download, Languages } from 'lucide-react'
 import RichTextEditor from '@/components/rich-text-editor'
 import SettingsDrawer from '@/components/settings-drawer'
 import { useEditorStore, useSettingsStore } from '@/model/store-provider'
 import { type JSONContent } from '@tiptap/react'
 import processContent from '@/model/pipelines'
 import { addRubyAnnotations } from '@/lib/ruby-annotation'
+import { convertJSONContentT2S } from '@/lib/opencc-utils/convert-t2s'
 
 export default function Home() {
   const mode = useEditorStore((state) => state.mode)
@@ -20,6 +21,7 @@ export default function Home() {
   const [downloadContent, setDownloadContent] = useState<string>('')
   const [rawPrintContent, setRawPrintContent] = useState<string>('')
   const [printContent, setPrintContent] = useState<string>('')
+  const [isConverting, setIsConverting] = useState(false)
 
   useEffect(() => {
     setOutputContent(processContent(rawContent, mode, pronunciationHints))
@@ -28,12 +30,29 @@ export default function Home() {
   useEffect(() => {
     const htmlWithPreservedEmptyLines = rawPrintContent.replace(/<p><\/p>/g, '<p><br></p>')
     setPrintContent(
-      rubyAnnotation && mode === 'mandarin' ? addRubyAnnotations(htmlWithPreservedEmptyLines) : htmlWithPreservedEmptyLines
+      rubyAnnotation && mode === 'mandarin'
+        ? addRubyAnnotations(htmlWithPreservedEmptyLines)
+        : htmlWithPreservedEmptyLines
     )
   }, [rubyAnnotation, rawPrintContent, mode])
 
   const handlePrint = () => {
     window.print()
+  }
+
+  const handleT2S = async () => {
+    if (!outputContent || isConverting) return
+
+    setIsConverting(true)
+    try {
+      const convertedContent = await convertJSONContentT2S(outputContent)
+      setOutputContent(convertedContent)
+    } catch (error) {
+      console.error('Failed to convert to Simplified Chinese:', error)
+      alert('轉換簡體失敗，請重試')
+    } finally {
+      setIsConverting(false)
+    }
   }
 
   const handleDownload = async () => {
@@ -141,9 +160,20 @@ export default function Home() {
                     <Download className='h-4 w-4' />
                   </Button>
                 ) : (
-                  <Button variant='outline' size='icon' onClick={handlePrint} title='打印'>
-                    <Printer className='h-4 w-4' />
-                  </Button>
+                  <>
+                    <Button
+                      variant='outline'
+                      size='icon'
+                      onClick={handleT2S}
+                      title='轉簡體'
+                      disabled={isConverting}
+                    >
+                      <Languages className='h-4 w-4' />
+                    </Button>
+                    <Button variant='outline' size='icon' onClick={handlePrint} title='打印'>
+                      <Printer className='h-4 w-4' />
+                    </Button>
+                  </>
                 )}
                 <SettingsDrawer>
                   <Button variant='outline' size='icon' title='設置'>
