@@ -26,8 +26,9 @@ export default function Home() {
   }, [rawContent, mode, pronunciationHints])
 
   useEffect(() => {
+    const htmlWithPreservedEmptyLines = rawPrintContent.replace(/<p><\/p>/g, '<p><br></p>')
     setPrintContent(
-      rubyAnnotation && mode === 'mandarin' ? addRubyAnnotations(rawPrintContent) : rawPrintContent
+      rubyAnnotation && mode === 'mandarin' ? addRubyAnnotations(htmlWithPreservedEmptyLines) : htmlWithPreservedEmptyLines
     )
   }, [rubyAnnotation, rawPrintContent, mode])
 
