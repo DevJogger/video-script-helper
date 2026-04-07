@@ -7,8 +7,10 @@ import { Superscript } from '@tiptap/extension-superscript'
 import { Subscript } from '@tiptap/extension-subscript'
 import { TextStyle, Color } from '@tiptap/extension-text-style'
 import Highlight from '@tiptap/extension-highlight'
+import { FontSize } from '@/lib/tiptap-extensions/font-size'
 import { MarkButton } from '@/components/tiptap-ui/mark-button'
 import { UndoRedoButton } from '@/components/tiptap-ui/undo-redo-button'
+import { FontSizeButton } from '@/components/tiptap-ui/font-size-button'
 import { useEditorStore } from '@/model/store-provider'
 import { useSettingsStore } from '@/model/store-provider'
 
@@ -25,6 +27,7 @@ const RichTextEditor: React.FC<RichTextEditorProps> = ({ onUpdate, content }) =>
       Superscript,
       Subscript,
       TextStyle,
+      FontSize,
       Color,
       Highlight.configure({ multicolor: true }),
     ],
@@ -57,6 +60,8 @@ const RichTextEditor: React.FC<RichTextEditorProps> = ({ onUpdate, content }) =>
           <MarkButton editor={editor} type='italic' />
           <MarkButton editor={editor} type='strike' />
           <MarkButton editor={editor} type='underline' />
+          <FontSizeButton editor={editor} action='increase' />
+          <FontSizeButton editor={editor} action='decrease' />
           <UndoRedoButton editor={editor} action='undo' />
           <UndoRedoButton editor={editor} action='redo' />
         </div>
