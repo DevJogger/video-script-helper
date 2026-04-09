@@ -10,7 +10,7 @@ import Highlight from '@tiptap/extension-highlight'
 import { FontSize } from '@/lib/tiptap-extensions/font-size'
 import { MarkButton } from '@/components/tiptap-ui/mark-button'
 import { UndoRedoButton } from '@/components/tiptap-ui/undo-redo-button'
-import { FontSizeButton } from '@/components/tiptap-ui/font-size-button'
+import { FontSizeSelect } from '@/components/tiptap-ui/font-size-select'
 import { useEditorStore } from '@/model/store-provider'
 import { useSettingsStore } from '@/model/store-provider'
 
@@ -60,8 +60,7 @@ const RichTextEditor: React.FC<RichTextEditorProps> = ({ onUpdate, content }) =>
           <MarkButton editor={editor} type='italic' />
           <MarkButton editor={editor} type='strike' />
           <MarkButton editor={editor} type='underline' />
-          <FontSizeButton editor={editor} action='increase' />
-          <FontSizeButton editor={editor} action='decrease' />
+          <FontSizeSelect editor={editor} />
           <UndoRedoButton editor={editor} action='undo' />
           <UndoRedoButton editor={editor} action='redo' />
         </div>
