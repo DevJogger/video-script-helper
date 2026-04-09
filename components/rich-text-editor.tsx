@@ -39,7 +39,7 @@ const RichTextEditor: React.FC<RichTextEditorProps> = ({ onUpdate, content }) =>
         style:
           mode === 'subtitle' && !!content
             ? `background: linear-gradient(to right, lab(96.5286% -0.0991821 0.364268) 0rem, lab(96.5286% -0.0991821 0.364268) ${subtitleBreakPosition + 0.5}rem, #afb9c7 ${subtitleBreakPosition + 0.5}rem); font-family: var(--font-sarasa);`
-            : '',
+            : 'font-family: var(--font-noto-sans-tc), var(--font-noto-sans-sc);',
       },
     },
     onUpdate: ({ editor }) => {
