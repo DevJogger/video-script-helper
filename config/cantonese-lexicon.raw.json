@@ -36,26 +36,6 @@
     "cantonese": "義工"
   },
   {
-    "mandarin": "這",
-    "cantonese": "呢"
-  },
-  {
-    "mandarin": "的",
-    "cantonese": "嘅"
-  },
-  {
-    "mandarin": "和",
-    "cantonese": "同"
-  },
-  {
-    "mandarin": "在",
-    "cantonese": "係"
-  },
-  {
-    "mandarin": "讓",
-    "cantonese": "令"
-  },
-  {
     "mandarin": "通過",
     "cantonese": "透過"
   },
@@ -64,19 +44,15 @@
     "cantonese": "大細"
   },
   {
-    "mandarin": "還",
-    "cantonese": "仲"
-  },
-  {
-    "mandarin": "們",
-    "cantonese": "哋"
-  },
-  {
     "mandarin": "撥打",
     "cantonese": "致電"
   },
   {
     "mandarin": "山體滑坡",
     "cantonese": "山泥傾瀉"
+  },
+  {
+    "mandarin": "順暢",
+    "cantonese": "暢順"
   }
 ]
