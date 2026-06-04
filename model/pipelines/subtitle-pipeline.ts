@@ -1,11 +1,79 @@
 import { type JSONContent } from '@tiptap/react'
+import { subtitleCorrectionMap, subtitleCorrectionPattern } from '@/model/lexicon'
+
+const processNode = (node: JSONContent): JSONContent[] => {
+  if (node.type === 'text' && typeof node.text === 'string') {
+    return replaceTextNode(node)
+  }
+
+  if (node.content && Array.isArray(node.content)) {
+    return [
+      {
+        ...node,
+        content: node.content.flatMap((child) => processNode(child)),
+      },
+    ]
+  }
+
+  return [node]
+}
+
+const replaceTextNode = (node: JSONContent): JSONContent[] => {
+  const text = node.text || ''
+  const originalMarks = node.marks || []
+
+  subtitleCorrectionPattern.lastIndex = 0
+  const match = subtitleCorrectionPattern.exec(text)
+
+  if (!match || match.index === undefined) {
+    return [node]
+  }
+
+  const matchedWord = match[0]
+  const startIndex = match.index
+  const endIndex = startIndex + matchedWord.length
+
+  const beforeText = text.slice(0, startIndex)
+  const afterText = text.slice(endIndex)
+  const replacement = subtitleCorrectionMap.get(matchedWord)!
+
+  const result: JSONContent[] = []
+
+  if (beforeText) {
+    result.push({
+      type: 'text',
+      text: beforeText,
+      marks: originalMarks,
+    })
+  }
+
+  result.push({
+    type: 'text',
+    text: replacement,
+    marks: originalMarks,
+  })
+
+  if (afterText) {
+    result.push(
+      ...replaceTextNode({
+        type: 'text',
+        text: afterText,
+        marks: originalMarks,
+      })
+    )
+  }
+
+  return result
+}
 
 const subtitlePipeline = (docNode: JSONContent) => {
   const processedContent = {
     ...docNode,
     content: docNode.content
+      // apply subtitle corrections
+      ?.flatMap((child) => processNode(child))
       // remove all the empty paragraphs
-      ?.filter(
+      .filter(
         (paragraphNode) =>
           // remove the paragraphs that start with a hard break or don't have any content
           !!paragraphNode.content &&
